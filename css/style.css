@@ -1,1 +1,270 @@
+/* resultDiv全体 */
+#resultDiv {
+    width: 100%;
+    margin: 20px auto;
+    font-family: "Yu Gothic", "Arial", sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* 中央寄せ */
+}
 
+/* 1企業ごとの表示カード */
+.company {
+    width: 80%;
+    display: flex;
+    justify-content: space-between; /* 列を均等に配置 */
+    align-items: center;
+    padding: 12px 16px;
+    border-radius: 10px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+    margin-bottom: 12px;
+    transition: background-color 0.3s;
+    line-height: 1.5;
+}
+
+/* ストライプ背景 (JavaScriptで付与したクラスを使用) */
+.stripe-odd {
+    background-color: #ffffff;
+}
+
+.stripe-even {
+    background-color: #f2f2f2;
+}
+
+/* hoverで少し明るく */
+.company:hover {
+    background-color: #e8e8e8;
+    cursor: default;
+}
+
+/* 列のスタイル */
+.col {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 8px;
+}
+
+.col.code-name {
+    flex: 2;          /* 幅広め */
+    font-weight: bold; /* 強調 */
+    color: #333;
+}
+
+.col.period {
+    flex: 1.5;
+}
+
+.col.count {
+    flex: 1;
+    text-align: right;
+    color: #555;
+}
+
+#h1 {
+    text-align: center;
+}
+
+/* かっこの部分を少し小さく＆薄めに */
+#h1 .sub-text {
+    font-size: 0.7em;
+    margin-left: 6px;
+}
+
+
+/* <div>タグの部分 */
+.company-info {
+    display: flex;
+    width: 100%;
+    color: inherit;
+    text-decoration: none;
+    flex: 1;
+    min-width: 0;
+}
+
+/* ニュースボタン（基本スタイル） */
+.news-link {
+    margin-left: 16px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* 白背景（odd）→ グレー系ボタン */
+.news-link-odd {
+    background-color: #f0f0f0;
+    color: #0078d4;
+}
+
+/* グレー背景（even）→ 白ボタン */
+.news-link-even {
+    background-color: #ffffff;
+    color: #0078d4;
+}
+
+/* hover時の効果 */
+.news-link:hover {
+    background-color: #e0e0e0;
+    color: #005a9e;
+}
+
+/* ==============================
+   スマホ対応（レスポンシブ対応）
+   ============================== */
+@media screen and (max-width: 600px) {
+    #h1 .sub-text {
+        display: block;   /* 改行 */
+        margin-left: 0;   /* 左の余白をリセット */
+        margin-top: 4px;  /* 上に少し余白を足す */
+        font-size: 0.7em;
+    }
+
+    /* カードを縦配置に */
+    .company {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 90%; /* 少し広げて余白確保 */
+    }
+
+    /* aタグ内の配置も縦に */
+    .company-link {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    /* 各列を折り返し許可＆見やすく */
+    .col {
+        padding: 4px 0;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+    }
+
+    /* コード名は少し大きく */
+    .col.code-name {
+        font-size: 1rem;
+    }
+
+    /* 期間と回数を少し間隔を取る */
+    .col.period,
+    .col.count {
+        margin-top: 4px;
+        font-size: 0.9rem;
+    }
+
+    /* ニュースボタンを下に */
+    .news-link {
+        margin-top: 8px;
+        width: 85%;
+        text-align: center;
+    }
+}
+
+
+/*ハンバーガーメニュー*/
+
+
+/* メニューのスタイル */
+.menu {
+  position: fixed;
+  top: 0;
+  right: -100%; /* 初期状態では画面の外に隠れている */
+  width: 300px;
+  height: 100%;
+  background-color: #fafafa;
+  color: #333;
+  transition: right 0.3s ease; /* スライドインのアニメーション */
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+/* メニューが開いているとき */
+.menu.open {
+  right: 0;
+}
+
+/* ボタンのスタイル */
+.hamburger {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 30px;
+  cursor: pointer;
+  z-index: 20;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  width: 100%;
+  background-color: #333;
+  margin: 5px 0;
+  transition: 0.4s;
+}
+
+/* バツ印に変化するスタイル */
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* メニューリストのスタイル */
+.menu ul {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 80px;
+}
+
+.menu li {
+  padding: 20px 0;
+  border-bottom: 1px solid #444;
+}
+
+.menu li a {
+  color: #333;
+  text-decoration: none;
+  display: block;
+}
+
+/* table用の処理 */
+.details {
+    width: 100%;
+    overflow-x: auto; /* 横にスクロール可能に */
+}
+
+.details table {
+    border-collapse: collapse;
+    width: 80%;           /* 見やすく少し広めに */
+    max-width: 1600px;     /* 最大幅を指定すると画面からはみ出さない */
+    margin: 10px auto;     /* 中央寄せ */
+    border: 1px solid #ccc;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+}
+
+.details th, .details td {
+    border: 1px solid #ccc;
+    padding: 8px 12px;   /* 少し余白を増やすと見やすくなる */
+    text-align: center;
+}
+
+.details th {
+    background-color: #f5f5f5;
+}
+
+td img {
+    display: block;
+    margin: 0 auto;
+    width: 60px;
+    height: 60px;
+}
