@@ -13,7 +13,6 @@ export async function render_data(groupedData) {
         const latest_account = company["直近短信"];
 
         groups.forEach(group => {
-            revise_num += 1;
 
             const first = group[0];
             const last = group[group.length - 1];
