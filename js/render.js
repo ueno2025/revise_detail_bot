@@ -135,7 +135,7 @@ export async function render_data(groupedData) {
                                 imgSrc = "img/flat.png";
                             }
 
-                            return `<td><img src="${imgSrc}" alt="" width="20" height="20"></td>`;
+                            return `<td><img src="${imgSrc}" alt="" width="20" height="20" class="td-img"></td>`;
                         }).join("")}
             </tr>
             `;
