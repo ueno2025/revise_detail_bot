@@ -1,6 +1,10 @@
 export async function render_data(groupedData) {
     const allRanges = [];
     let revise_num = 0;
+    const today = new Date();
+    const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const endDate = new Date(baseDate);
+    endDate.setDate(baseDate.getDate() + 7); // 7日後
 
     // 各企業ごとに修正グループを処理
     groupedData.forEach(company => {
@@ -14,14 +18,21 @@ export async function render_data(groupedData) {
             const first = group[0];
             const last = group[group.length - 1];
 
-            allRanges.push({
-                companyCode: company["証券コード"],
-                companyName: company["企業名"],
-                firstDate: { month: first.month, day: first.day },
-                lastDate: { month: last.month, day: last.day },
-                range: group,
-                now_account: latest_account
-            });
+            const firstDateObj = new Date(today.getFullYear(), first.month - 1, first.day);
+
+            // 今日 〜 7日後の範囲だけに限定
+            if (firstDateObj >= baseDate && firstDateObj <= endDate) {
+                revise_num += 1;
+
+                allRanges.push({
+                    companyCode: company["証券コード"],
+                    companyName: company["企業名"],
+                    firstDate: { month: first.month, day: first.day },
+                    lastDate: { month: last.month, day: last.day },
+                    range: group,
+                    now_account: latest_account
+                });
+            }
         });
     });
 
@@ -31,9 +42,6 @@ export async function render_data(groupedData) {
         sub_text[0].innerHTML += ` 合計: ${revise_num}件`;
     }
 
-    // ソート処理（lastDate に近い順）
-    const today = new Date();
-    const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
     allRanges.sort((a, b) => {
         const aDate = new Date(today.getFullYear(), a.lastDate.month - 1, a.lastDate.day);
@@ -122,21 +130,21 @@ export async function render_data(groupedData) {
             <tr>
                 <td>${element.quarter}</td>
                 ${keys.map(k => {
-                            const value = element.increase_rate?.[k];
-                            let imgSrc;
+                const value = element.increase_rate?.[k];
+                let imgSrc;
 
-                            if (value === null || value === undefined) {
-                                imgSrc = "img/null.png";
-                            } else if (value > 0) {
-                                imgSrc = "img/up.png";
-                            } else if (value < 0) {
-                                imgSrc = "img/down.png";
-                            } else { // value === 0
-                                imgSrc = "img/flat.png";
-                            }
+                if (value === null || value === undefined) {
+                    imgSrc = "img/null.png";
+                } else if (value > 0) {
+                    imgSrc = "img/up.png";
+                } else if (value < 0) {
+                    imgSrc = "img/down.png";
+                } else { // value === 0
+                    imgSrc = "img/flat.png";
+                }
 
-                            return `<td><img src="${imgSrc}" alt="" width="20" height="20" class="td-img"></td>`;
-                        }).join("")}
+                return `<td><img src="${imgSrc}" alt="" width="20" height="20" class="td-img"></td>`;
+            }).join("")}
             </tr>
             `;
 
