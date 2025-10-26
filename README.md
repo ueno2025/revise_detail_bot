@@ -1,0 +1,1 @@
+# revise_detail_bot
