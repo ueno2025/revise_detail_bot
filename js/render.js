@@ -1,10 +1,14 @@
 export async function render_data(groupedData) {
     const allRanges = [];
     let revise_num = 0;
+
+    const RANGE_START_OFFSET = 3; // n日前から
+    const RANGE_END_OFFSET = 3;   // n日後まで
     const today = new Date();
     const baseDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
     const endDate = new Date(baseDate);
-    endDate.setDate(baseDate.getDate() + 7); // 7日後
+    endDate.setDate(baseDate.getDate() + RANGE_END_OFFSET); //  日後の業績修正まで取得
+    baseDate.setDate(baseDate.getDate() - RANGE_START_OFFSET) // n日前の業績修正まで取得 
 
     // 各企業ごとに修正グループを処理
     groupedData.forEach(company => {
@@ -18,9 +22,10 @@ export async function render_data(groupedData) {
             const last = group[group.length - 1];
 
             const firstDateObj = new Date(today.getFullYear(), first.month - 1, first.day);
+            const lastDateObj = new Date(today.getFullYear(), last.month - 1, last.day);
 
             // 今日 〜 7日後の範囲だけに限定
-            if (firstDateObj >= baseDate && firstDateObj <= endDate) {
+            if (lastDateObj >= baseDate && firstDateObj <= endDate) {
                 revise_num += 1;
 
                 allRanges.push({
@@ -38,7 +43,11 @@ export async function render_data(groupedData) {
     // 件数表示
     const sub_text = document.getElementsByClassName("sub-text");
     if (sub_text.length > 0) {
-        sub_text[0].innerHTML += ` 合計: ${revise_num}件`;
+        sub_text[0].innerHTML = `
+        (${baseDate.getFullYear()}/${String(baseDate.getMonth() + 1).padStart(2, '0')}/${String(baseDate.getDate()).padStart(2, '0')}
+        ~
+        ${endDate.getFullYear()}/${String(endDate.getMonth() + 1).padStart(2, '0')}/${String(endDate.getDate()).padStart(2, '0')})
+         合計: ${revise_num}件`;
     }
 
 
