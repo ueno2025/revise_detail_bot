@@ -255,7 +255,7 @@
 
 .details table {
     border-collapse: collapse;
-    width: 80%;           /* 見やすく少し広めに */
+    width: 50%;           /* 見やすく少し広めに */
     max-width: 1600px;     /* 最大幅を指定すると画面からはみ出さない */
     margin: 10px auto;     /* 中央寄せ */
     border: 1px solid #ccc;
